@@ -1,0 +1,24 @@
+{
+  "name": "node-stream-player",
+  "version": "1.0.0",
+  "description": "Queue mp3 streams from the web and play them out of your speakers.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/michael-gillett/node-stream-player"
+  },
+  "keywords": [
+    "stream",
+    "mp3",
+    "player"
+  ],
+  "author": "Michael Gillett",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/michael-gillett/node-stream-player/issues"
+  },
+  "homepage": "https://github.com/michael-gillett/node-stream-player"
+}
