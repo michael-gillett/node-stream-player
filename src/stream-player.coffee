@@ -51,13 +51,13 @@ class StreamPlayer extends events.EventEmitter
   playStream: (stream) ->
     decoder = new lame.Decoder()
     speaker = new Speaker(audioOptions)
-    stream.pipe(decoder).once 'format', () =>
+    stream.pipe(decoder).once 'format', () ->
       decoder.pipe(speaker)
-      @emit('play start')
-      speaker.once 'close', () =>
-        @emit('play end')
-        @queue.shift()
-        @trackInfo.shift()
-        @play()
+      self.emit('play start')
+      speaker.once 'close', () ->
+        self.emit('play end')
+        self.queue.shift()
+        self.trackInfo.shift()
+        self.play()
 
 module.exports = StreamPlayer
