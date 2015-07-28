@@ -1,5 +1,5 @@
 {
-  "name": "node-stream-player",
+  "name": "stream-player",
   "version": "1.0.0",
   "description": "Queue mp3 streams from the web and play them out of your speakers.",
   "main": "index.js",
@@ -20,5 +20,9 @@
   "bugs": {
     "url": "https://github.com/michael-gillett/node-stream-player/issues"
   },
-  "homepage": "https://github.com/michael-gillett/node-stream-player"
+  "homepage": "https://github.com/michael-gillett/node-stream-player",
+  "dependencies": {
+    "lame": "^1.2.2",
+    "speaker": "^0.2.5"
+  }
 }
