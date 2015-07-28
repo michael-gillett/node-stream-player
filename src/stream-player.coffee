@@ -3,9 +3,6 @@ lame = require('lame')
 request = require('request')
 events = require('events')
 
-self = null
-
-
 audioOptions = {
   channels: 2,
   bitDepth: 16,
@@ -13,13 +10,16 @@ audioOptions = {
   mode: lame.STEREO
 }
 
+self = null
+
 class StreamPlayer extends events.EventEmitter
 
   constructor: () ->
     events.EventEmitter.call(this)
+    self = this
     @queue = []
     @trackInfo = []
-    self = this
+
 
   # Play the next song in the queue if it exists
   play: () ->
@@ -33,7 +33,7 @@ class StreamPlayer extends events.EventEmitter
   add: (url, track) ->
     @queue.push(url)
     @trackInfo.push(track)
-    self.emit('song added')
+    @emit('song added')
 
   nowPlaying: () ->
     song = @trackInfo[0]
@@ -51,11 +51,11 @@ class StreamPlayer extends events.EventEmitter
   playStream: (stream) ->
     decoder = new lame.Decoder()
     speaker = new Speaker(audioOptions)
-    stream.pipe(decoder).once 'format', () ->
-      this.pipe(speaker)
-      self.emit('play start')
-      speaker.once 'close', () ->
-        self.emit('play end')
+    stream.pipe(decoder).once 'format', () =>
+      decoder.pipe(speaker)
+      @emit('play start')
+      speaker.once 'close', () =>
+        @emit('play end')
         @queue.shift()
         @trackInfo.shift()
         @play()

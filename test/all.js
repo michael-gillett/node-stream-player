@@ -24,17 +24,13 @@ describe('StreamPlayer', function() {
   });
 
   describe('#add()', function () {
-    it('should emit that a song has been added', function () {
-      var errTimeout = setTimeout(function () {
-        assert(false, 'Event never fired');
-      }, 1000);
-
+    it('should emit that a song has been added', function (done) {
       var player = new StreamPlayer();
       var metadata = {title: "Some song", artist: "Some artist"};
-      player.add('', metadata);
-      player.on('song added', function() {
-        assert(true, 'Song successfully added')
+      player.once('song added', function() {
+        done();
       })
+      player.add('', metadata);
     });
   });
 
