@@ -4,7 +4,10 @@
   "description": "Queue mp3 streams from the web and play them out of your speakers.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/all.js"
+  },
+  "devDependencies": {
+    "mocha": ">=1.4.28"
   },
   "repository": {
     "type": "git",
@@ -22,7 +25,9 @@
   },
   "homepage": "https://github.com/michael-gillett/node-stream-player",
   "dependencies": {
+    "events": "^1.0.2",
     "lame": "^1.2.2",
+    "request": "^2.60.0",
     "speaker": "^0.2.5"
   }
 }
