@@ -3,8 +3,6 @@ lame = require('lame')
 request = require('request')
 events = require('events')
 
-queue = []
-trackInfo = []
 self = null
 
 
@@ -18,25 +16,31 @@ audioOptions = {
 class StreamPlayer extends events.EventEmitter
 
   constructor: () ->
-    events.EventEmitter.call(this);
+    events.EventEmitter.call(this)
+    @queue = []
+    @trackInfo = []
     self = this
 
   # Play the next song in the queue if it exists
   play: () ->
-    nextSongUrl = queue[0]
+    nextSongUrl = @queue[0]
     if typeof nextSongUrl != 'undefined'
-      self.getStream(nextSongUrl, self.playStream)
+      @getStream(nextSongUrl, @playStream)
     else
       return new Error('The queue is empty.')
 
   # Add a song and metadata to the queue
   add: (url, track) ->
-    queue.push(url)
-    trackInfo.push(track)
+    @queue.push(url)
+    @trackInfo.push(track)
     self.emit('song added')
 
   nowPlaying: () ->
-    return trackInfo[0]
+    song = @trackInfo[0]
+    if typeof song != 'undefined'
+      return song
+    else
+      return new Error('No metadata was given.')
 
   # Get the audio stream
   getStream: (url, callback) ->
@@ -52,8 +56,8 @@ class StreamPlayer extends events.EventEmitter
       self.emit('play start')
       speaker.once 'close', () ->
         self.emit('play end')
-        queue.shift()
-        trackInfo.shift()
-        self.play()
+        @queue.shift()
+        @trackInfo.shift()
+        @play()
 
 module.exports = StreamPlayer

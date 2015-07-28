@@ -6,7 +6,7 @@ describe('StreamPlayer', function() {
   describe('#play()', function () {
     it('should throw an error if attempting to play an empty queue', function () {
       var player = new StreamPlayer();
-      assert.throws(player.play(), Error);
+      assert.throws(player.play(), 'The queue is empty.');
     });
   });
 
@@ -16,6 +16,10 @@ describe('StreamPlayer', function() {
       var metadata = {title: "Some song", artist: "Some artist"};
       player.add('', metadata);
       assert.equal(player.nowPlaying(), metadata);
+    });
+    it('should return undefined if we did not no pass any metadata', function () {
+      var player = new StreamPlayer();
+      assert.throws(player.nowPlaying(), 'No metadata was given.');
     });
   });
 

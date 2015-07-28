@@ -1,4 +1,5 @@
 # node-stream-player
+[![npm version](https://badge.fury.io/js/stream-player.svg)](http://badge.fury.io/js/stream-player)
 
 ##### This package is still in the very early stages of development so expect breaking changes and things to not behave as expected.
 
@@ -30,6 +31,9 @@ player.add('http://path-to-mp3.com/example.mp3', metaData);
 
 // Start playing all songs added to the queue (FIFO)
 player.play();
+
+// Get the metadata for the current playing song, throws an error if no metadata was given
+player.nowPlaying()
 ```
 
 ### Roadmap
