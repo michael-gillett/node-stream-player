@@ -10,7 +10,7 @@ $ npm install stream-player
 ```
 
 ### Example
-```
+```javascript
 var StreamPlayer = require('stream-player');
 var player = new StreamPlayer();
 

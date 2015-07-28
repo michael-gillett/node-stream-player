@@ -24,7 +24,7 @@ class StreamPlayer extends events.EventEmitter
     # Grab the next song if it exists
     nextSongUrl = queue[0]
     if typeof nextSongUrl != 'undefined'
-      self.getStream(url, self.playStream)
+      self.getStream(nextSongUrl, self.playStream)
 
   add: (url, track) ->
     queue.push(url)
