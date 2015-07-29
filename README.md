@@ -34,6 +34,9 @@ player.play();
 
 // Get the metadata for the current playing song, throws an error if no metadata was given
 player.nowPlaying()
+
+// Get an array of metadata for the songs in the queue
+player.getQueue()
 ```
 
 ### Roadmap

@@ -42,6 +42,9 @@ class StreamPlayer extends events.EventEmitter
     else
       return new Error('No metadata was given.')
 
+  getQueue: () ->
+    return @trackInfo
+
   # Get the audio stream
   getStream: (url, callback) ->
     request.get(url).on 'response', (res) ->
