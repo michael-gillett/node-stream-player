@@ -19,6 +19,7 @@ class StreamPlayer extends events.EventEmitter
     self = this
     @queue = []
     @trackInfo = []
+    @currentSong = null
     @isPlaying = false
 
 
@@ -26,7 +27,6 @@ class StreamPlayer extends events.EventEmitter
   play: () ->
     if @queue.length > 0 && !@isPlaying
       @getStream(@queue[0], @playStream)
-      @isPlaying = true
     else if @isPlaying
       return new Error('A song is already playing.')
     else
@@ -39,9 +39,8 @@ class StreamPlayer extends events.EventEmitter
     @emit('song added')
 
   nowPlaying: () ->
-    song = @trackInfo[0]
-    if typeof song != 'undefined' && @isPlaying
-      return song
+    if typeof @currentSong != 'undefined' && @isPlaying
+      return @currentSong
     else if !@isPlaying
       return new Error('No song is currently playing.')
     else
@@ -61,12 +60,14 @@ class StreamPlayer extends events.EventEmitter
     speaker = new Speaker(audioOptions)
     stream.pipe(decoder).once 'format', () ->
       decoder.pipe(speaker)
+      self.queue.shift()
+      self.currentSong = self.trackInfo.shift()
+      self.isPlaying = true
       self.emit('play start')
       speaker.once 'close', () ->
-        self.emit('play end')
+        self.currentSong = null
         self.isPlaying = false
-        self.queue.shift()
-        self.trackInfo.shift()
+        self.emit('play end')
         self.play()
 
 module.exports = StreamPlayer

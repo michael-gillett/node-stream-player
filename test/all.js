@@ -13,31 +13,36 @@ describe('StreamPlayer', function() {
     it('should emit play start if a valid song url is added', function (done) {
       var player = new StreamPlayer();
       player.on('play start', function() {
-        done()
+        done();
       })
-      player.add(validSong1)
-      player.play()
+      player.add(validSong1);
+      player.play();
     });
-
   });
 
   describe('#nowPlaying()', function () {
-    it('should return the metadata for the first song added to the queue', function () {
+    it('should return the metadata for the first song added to the queue', function (done) {
       var player = new StreamPlayer();
       var metadata = {title: "Some song", artist: "Some artist"};
       player.add(validSong1, metadata);
-      player.play()
-      assert.equal(player.nowPlaying(), metadata);
+      player.on('play start', function() {
+        assert.equal(player.nowPlaying(), metadata);
+        done();
+      });
+      player.play();
     });
     it('should return an error if no song is currently playing', function () {
       var player = new StreamPlayer();
       assert.throws(player.nowPlaying(), 'No song is currently playing.');
     });
-    it('should return null if no metadata is given', function () {
+    it('should return null if no metadata is given', function (done) {
       var player = new StreamPlayer();
-      player.add(validSong1)
-      player.play()
-      assert.equal(player.nowPlaying(), null);
+      player.add(validSong1);
+      player.on('play start', function() {
+        assert.equal(player.nowPlaying(), null);
+        done();
+      });
+      player.play();
     });
   });
 
