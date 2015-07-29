@@ -1,6 +1,8 @@
 var assert = require('assert');
 var StreamPlayer = require('../lib/stream-player');
 
+var validSong1 = 'http://soundbible.com/grab.php?id=989&type=mp3';
+
 describe('StreamPlayer', function() {
 
   describe('#play()', function () {
@@ -8,18 +10,34 @@ describe('StreamPlayer', function() {
       var player = new StreamPlayer();
       assert.throws(player.play(), 'The queue is empty.');
     });
+    it('should emit play start if a valid song url is added', function (done) {
+      var player = new StreamPlayer();
+      player.on('play start', function() {
+        done()
+      })
+      player.add(validSong1)
+      player.play()
+    });
+
   });
 
   describe('#nowPlaying()', function () {
     it('should return the metadata for the first song added to the queue', function () {
       var player = new StreamPlayer();
       var metadata = {title: "Some song", artist: "Some artist"};
-      player.add('', metadata);
+      player.add(validSong1, metadata);
+      player.play()
       assert.equal(player.nowPlaying(), metadata);
     });
-    it('should return undefined if we did not no pass any metadata', function () {
+    it('should return an error if no song is currently playing', function () {
       var player = new StreamPlayer();
-      assert.throws(player.nowPlaying(), 'No metadata was given.');
+      assert.throws(player.nowPlaying(), 'No song is currently playing.');
+    });
+    it('should return null if no metadata is given', function () {
+      var player = new StreamPlayer();
+      player.add(validSong1)
+      player.play()
+      assert.equal(player.nowPlaying(), null);
     });
   });
 
