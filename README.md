@@ -32,16 +32,30 @@ player.add('http://path-to-mp3.com/example.mp3', metaData);
 // Start playing all songs added to the queue (FIFO)
 player.play();
 
-// Get the metadata for the current playing song, throws an error if no metadata was given
-player.nowPlaying()
+// Get the metadata for the current playing song
+// throws an error if no song is currently playing or null if no metadata was given
+player.nowPlaying();
 
-// Get an array of metadata for the songs in the queue
-player.getQueue()
+// Get an array of metadata for the songs in the queue (excludes the current playing song)
+player.getQueue();
+
+
+// EMIT EVENTS
+
+player.on('play start', function() {
+  // Code here is executed every time a song starts playing
+});
+
+player.on('play end', function() {
+  // Code here is executed every time a song ends
+});
+
+player.on('song added', function() {
+  // Code here is executed every time a song is added to the queue
+});
 ```
 
 ### Roadmap
-- Methods to get metadata for current playing song and songs in the queue
-- Ability to pause a song part way through and pick up at a later time
-- Events for when a song starts, when a song ends, when the queue is empty, etc.
 - Error message system
+- Ability to pause a song part way through and pick up at a later time
 - Ability to play local files (Not a huge priority for my needs, but I will add it at some point for completeness)

@@ -16,7 +16,8 @@
   "keywords": [
     "stream",
     "mp3",
-    "player"
+    "player",
+    "audio"
   ],
   "author": "Michael Gillett",
   "license": "MIT",
