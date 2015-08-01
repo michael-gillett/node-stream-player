@@ -1,7 +1,8 @@
 var assert = require('assert');
 var StreamPlayer = require('../lib/stream-player');
 
-var validSong1 = 'http://soundbible.com/grab.php?id=989&type=mp3';
+var validSong1 = 'http://www.stephaniequinn.com/Music/Commercial%20DEMO%20-%2015.mp3';
+var invalidSong1 = 'http://google.com'
 
 describe('StreamPlayer', function() {
 
@@ -17,6 +18,23 @@ describe('StreamPlayer', function() {
       })
       player.add(validSong1);
       player.play();
+    });
+    it('should throw an error if we try to play() when a song is already playing', function (done) {
+      var player = new StreamPlayer();
+      player.on('play start', function() {
+        assert.throws(player.play(), Error)
+        done();
+      })
+      player.add(validSong1);
+      player.play();
+    });
+    it('should throw an error if we try to play() a url that is not a song', function (done) {
+      var player = new StreamPlayer();
+      player.add(invalidSong1);
+      player.play()
+      player.once('invalid url', function() {
+        done()
+      })
     });
   });
 

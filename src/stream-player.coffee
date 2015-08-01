@@ -52,7 +52,12 @@ class StreamPlayer extends events.EventEmitter
   # Get the audio stream
   getStream: (url, callback) ->
     request.get(url).on 'response', (res) ->
-      callback(res)
+      if res.headers['content-type'] == 'audio/mpeg'
+        callback(res)
+      else
+        self.emit('invalid url')
+        loadNextSong()
+
 
   # Decode the stream and pipe it to our speakers
   playStream: (stream) ->
@@ -65,9 +70,15 @@ class StreamPlayer extends events.EventEmitter
       self.isPlaying = true
       self.emit('play start')
       speaker.once 'close', () ->
-        self.currentSong = null
-        self.isPlaying = false
-        self.emit('play end')
-        self.play()
+        loadNextSong()
+
+
+
+loadNextSong = () ->
+  self.currentSong = null
+  self.isPlaying = false
+  self.emit('play end')
+  self.play()
+
 
 module.exports = StreamPlayer
