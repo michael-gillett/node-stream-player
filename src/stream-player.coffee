@@ -21,6 +21,7 @@ class StreamPlayer extends events.EventEmitter
     @trackInfo = []
     @currentSong = null
     @playing = false
+    @startTime = 0
 
 
   # Play the next song in the queue if it exists
@@ -38,17 +39,20 @@ class StreamPlayer extends events.EventEmitter
     @trackInfo.push(track)
     @emit('song added')
 
+  # Returns the metadata for the song that is currently playing
   nowPlaying: () ->
     if typeof @currentSong != 'undefined' && @playing
-      return @currentSong
+      return {track: @currentSong, time: @startTime}
     else if !@playing
       return new Error('No song is currently playing.')
     else
-      return null
+      return {track: null, time: @startTime}
 
+  # Returns if there is a song currently playing
   isPlaying: () ->
     return @playing
 
+  # Returns the metadata for the songs that are in the queue
   getQueue: () ->
     return @trackInfo
 
@@ -68,6 +72,7 @@ class StreamPlayer extends events.EventEmitter
     speaker = new Speaker(audioOptions)
     stream.pipe(decoder).once 'format', () ->
       decoder.pipe(speaker)
+      self.startTime = Date.now();
       self.queue.shift()
       self.currentSong = self.trackInfo.shift()
       self.playing = true
@@ -76,7 +81,7 @@ class StreamPlayer extends events.EventEmitter
         loadNextSong()
 
 
-
+# Load the next song in the queue if there is one
 loadNextSong = () ->
   self.currentSong = null
   self.playing = false

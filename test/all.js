@@ -22,7 +22,7 @@ describe('StreamPlayer', function() {
     it('should throw an error if we try to play() when a song is already playing', function (done) {
       var player = new StreamPlayer();
       player.on('play start', function() {
-        assert.throws(player.play(), Error)
+        assert.throws(player.play(), Error);
         done();
       })
       player.add(validSong1);
@@ -31,9 +31,9 @@ describe('StreamPlayer', function() {
     it('should throw an error if we try to play() a url that is not a song', function (done) {
       var player = new StreamPlayer();
       player.add(invalidSong1);
-      player.play()
+      player.play();
       player.once('invalid url', function() {
-        done()
+        done();
       })
     });
   });
@@ -44,7 +44,11 @@ describe('StreamPlayer', function() {
       var metadata = {title: "Some song", artist: "Some artist"};
       player.add(validSong1, metadata);
       player.on('play start', function() {
-        assert.equal(player.nowPlaying(), metadata);
+        var time = Date.now();
+        var current = player.nowPlaying();
+        assert.deepEqual(current.track, metadata);
+        // Check that the timestamp is +/- 10 ms
+        assert(time <= current.time + 10 && time >= current.time - 10);
         done();
       });
       player.play();

@@ -32,7 +32,7 @@ player.add('http://path-to-mp3.com/example.mp3', metaData);
 // Start playing all songs added to the queue (FIFO)
 player.play();
 
-// Get the metadata for the current playing song
+// Get the metadata for the current playing song and a time stamp when it started playing
 // throws an error if no song is currently playing or null if no metadata was given
 player.nowPlaying();
 
