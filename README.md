@@ -39,6 +39,9 @@ player.nowPlaying();
 // Get an array of metadata for the songs in the queue (excludes the current playing song)
 player.getQueue();
 
+// Get if the player is currently playing
+player.isPlaying()
+
 
 // EMIT EVENTS
 

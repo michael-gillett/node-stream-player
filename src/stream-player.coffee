@@ -20,14 +20,14 @@ class StreamPlayer extends events.EventEmitter
     @queue = []
     @trackInfo = []
     @currentSong = null
-    @isPlaying = false
+    @playing = false
 
 
   # Play the next song in the queue if it exists
   play: () ->
-    if @queue.length > 0 && !@isPlaying
+    if @queue.length > 0 && !@playing
       @getStream(@queue[0], @playStream)
-    else if @isPlaying
+    else if @playing
       return new Error('A song is already playing.')
     else
       return new Error('The queue is empty.')
@@ -39,12 +39,15 @@ class StreamPlayer extends events.EventEmitter
     @emit('song added')
 
   nowPlaying: () ->
-    if typeof @currentSong != 'undefined' && @isPlaying
+    if typeof @currentSong != 'undefined' && @playing
       return @currentSong
-    else if !@isPlaying
+    else if !@playing
       return new Error('No song is currently playing.')
     else
       return null
+
+  isPlaying: () ->
+    return @playing
 
   getQueue: () ->
     return @trackInfo
@@ -67,7 +70,7 @@ class StreamPlayer extends events.EventEmitter
       decoder.pipe(speaker)
       self.queue.shift()
       self.currentSong = self.trackInfo.shift()
-      self.isPlaying = true
+      self.playing = true
       self.emit('play start')
       speaker.once 'close', () ->
         loadNextSong()
@@ -76,7 +79,7 @@ class StreamPlayer extends events.EventEmitter
 
 loadNextSong = () ->
   self.currentSong = null
-  self.isPlaying = false
+  self.playing = false
   self.emit('play end')
   self.play()
 
