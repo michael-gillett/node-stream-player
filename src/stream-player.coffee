@@ -41,12 +41,10 @@ class StreamPlayer extends events.EventEmitter
 
   # Returns the metadata for the song that is currently playing
   nowPlaying: () ->
-    if typeof @currentSong != 'undefined' && @playing
+    if typeof @playing
       return {track: @currentSong, time: @startTime}
-    else if !@playing
-      return new Error('No song is currently playing.')
     else
-      return {track: null, time: @startTime}
+      return new Error('No song is currently playing.')
 
   # Returns if there is a song currently playing
   isPlaying: () ->

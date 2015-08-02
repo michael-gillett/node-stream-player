@@ -5,12 +5,12 @@
 
 For all of your mp3 streaming needs. Queue mp3 streams and play them through your computers speakers.
 
-### Installation
+## Installation
 ```
 $ npm install stream-player
 ```
 
-### Example
+## Example
 ```javascript
 var StreamPlayer = require('stream-player');
 var player = new StreamPlayer();
@@ -33,7 +33,6 @@ player.add('http://path-to-mp3.com/example.mp3', metaData);
 player.play();
 
 // Get the metadata for the current playing song and a time stamp when it started playing
-// throws an error if no song is currently playing or null if no metadata was given
 player.nowPlaying();
 
 // Get an array of metadata for the songs in the queue (excludes the current playing song)
@@ -56,9 +55,35 @@ player.on('play end', function() {
 player.on('song added', function() {
   // Code here is executed every time a song is added to the queue
 });
+
+```
+## Methods
+### `add(url [, metadata])`
+Adds the mp3 stream located at `url` to the queue. The optional metadata parameter can be any JS object that holds information about the song. If no metadata is given then it will be `undefined` when referenced.
+### `play()`
+Starts playing the next song in the queue out of the speakers.
+`throws new Error('A song is already playing.')`
+`throws new Error('The queue is empty.')`
+### `getQueue()`
+Returns an array of song metadata in the queue.
+### `isPlaying()`
+Returns true if a song is currently playing and false otherwise.
+### `nowPlaying()`
+Returns an object containing the current playing song's metadata and the Unix time stamp of when the song started playing.
+`throws new Error('No song is currently playing.')`
+###### Example
+```javascript
+{
+  track: {
+    title: "Some song",
+    artist: "Some artist"
+  },
+  timestamp: 1438489161
+}
 ```
 
+
+
 ### Roadmap
-- Error message system
 - Ability to pause a song part way through and pick up at a later time
 - Ability to play local files (Not a huge priority for my needs, but I will add it at some point for completeness)

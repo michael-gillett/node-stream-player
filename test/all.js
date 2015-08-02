@@ -57,11 +57,15 @@ describe('StreamPlayer', function() {
       var player = new StreamPlayer();
       assert.throws(player.nowPlaying(), 'No song is currently playing.');
     });
-    it('should return null if no metadata is given', function (done) {
+    it('should return undefined if no metadata is given', function (done) {
       var player = new StreamPlayer();
       player.add(validSong1);
       player.on('play start', function() {
-        assert.equal(player.nowPlaying(), null);
+        var time = Date.now();
+        var current = player.nowPlaying();
+        assert(typeof current.track == 'undefined');
+        // Check that the timestamp is +/- 10 ms
+        assert(time <= current.time + 10 && time >= current.time - 10);
         done();
       });
       player.play();
