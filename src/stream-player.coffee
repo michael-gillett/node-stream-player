@@ -28,6 +28,9 @@ class StreamPlayer extends events.EventEmitter
   play: () ->
     if @queue.length > 0 && !@playing
       @getStream(@queue[0], @playStream)
+      self.playing = true
+      self.queue.shift()
+      self.currentSong = self.trackInfo.shift()
     else if @playing
       return new Error('A song is already playing.')
     else
@@ -71,9 +74,6 @@ class StreamPlayer extends events.EventEmitter
     stream.pipe(decoder).once 'format', () ->
       decoder.pipe(speaker)
       self.startTime = Date.now();
-      self.queue.shift()
-      self.currentSong = self.trackInfo.shift()
-      self.playing = true
       self.emit('play start')
       speaker.once 'close', () ->
         loadNextSong()

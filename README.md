@@ -1,8 +1,6 @@
 # node-stream-player
 [![npm version](https://badge.fury.io/js/stream-player.svg)](http://badge.fury.io/js/stream-player)
 
-##### This package is still in the very early stages of development so expect breaking changes and things to not behave as expected.
-
 For all of your mp3 streaming needs. Queue mp3 streams and play them through your computers speakers.
 
 ## Installation
