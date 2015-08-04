@@ -48,7 +48,7 @@ describe('StreamPlayer', function() {
         var current = player.nowPlaying();
         assert.deepEqual(current.track, metadata);
         // Check that the timestamp is +/- 10 ms
-        assert(time <= current.time + 10 && time >= current.time - 10);
+        assert(Math.abs(time - current.timestamp) < 10);
         done();
       });
       player.play();
@@ -65,7 +65,7 @@ describe('StreamPlayer', function() {
         var current = player.nowPlaying();
         assert(typeof current.track == 'undefined');
         // Check that the timestamp is +/- 10 ms
-        assert(time <= current.time + 10 && time >= current.time - 10);
+        assert(Math.abs(time - current.timestamp) < 10);
         done();
       });
       player.play();
