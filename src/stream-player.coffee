@@ -28,9 +28,9 @@ class StreamPlayer extends events.EventEmitter
   play: () ->
     if @queue.length > 0 && !@playing
       @getStream(@queue[0], @playStream)
-      self.playing = true
-      self.queue.shift()
-      self.currentSong = self.trackInfo.shift()
+      @playing = true
+      @queue.shift()
+      @currentSong = self.trackInfo.shift()
     else if @playing
       return new Error('A song is already playing.')
     else
@@ -44,7 +44,7 @@ class StreamPlayer extends events.EventEmitter
 
   # Returns the metadata for the song that is currently playing
   nowPlaying: () ->
-    if typeof @playing
+    if @playing
       return {track: @currentSong, timestamp: @startTime}
     else
       return new Error('No song is currently playing.')
