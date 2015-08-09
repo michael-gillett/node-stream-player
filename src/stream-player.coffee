@@ -36,6 +36,13 @@ class StreamPlayer extends events.EventEmitter
     else
       return new Error('The queue is empty.')
 
+  # Remove a song with the given id metadata attribute
+  remove: (id) ->
+    index = trackInfo.map( (info) -> return info.id ).indexOf(id)
+    trackInfo.splice(index, 1)
+    queue.splice(index, 1)
+
+
   # Add a song and metadata to the queue
   add: (url, track) ->
     @queue.push(url)
