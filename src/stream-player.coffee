@@ -38,9 +38,9 @@ class StreamPlayer extends events.EventEmitter
 
   # Remove a song with the given id metadata attribute
   remove: (id) ->
-    index = trackInfo.map( (info) -> return info.id ).indexOf(id)
-    trackInfo.splice(index, 1)
-    queue.splice(index, 1)
+    index = @trackInfo.map( (info) -> return info.id ).indexOf(parseInt(id, 10))
+    @trackInfo.splice(index, 1)
+    @queue.splice(index, 1)
 
 
   # Add a song and metadata to the queue
