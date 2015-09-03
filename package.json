@@ -1,6 +1,6 @@
 {
   "name": "stream-player",
-  "version": "0.1.12",
+  "version": "0.2.0",
   "description": "Queue mp3 streams from the web and play them out of your speakers.",
   "main": "index.js",
   "scripts": {

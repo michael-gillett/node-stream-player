@@ -22,11 +22,15 @@ class StreamPlayer extends events.EventEmitter
     @currentSong = null
     @playing = false
     @startTime = 0
+    @speaker = null
+    @decoder = null
 
 
   # Play the next song in the queue if it exists
   play: () ->
-    if @queue.length > 0 && !@playing
+    if @currentSong != null
+      @resume()
+    else if @queue.length > 0 && !@playing
       @getStream(@queue[0], @playStream)
       @playing = true
       @queue.shift()
@@ -35,6 +39,20 @@ class StreamPlayer extends events.EventEmitter
       return new Error('A song is already playing.')
     else
       return new Error('The queue is empty.')
+
+  # Pause the current playing audio stream
+  pause: () ->
+    @playing = false
+    @speaker.removeAllListeners 'close'
+    @speaker.end()
+
+  # Pipe the decoded audio stream back to a speaker
+  resume: () ->
+    @speaker = new Speaker(audioOptions)
+    @decoder.pipe(@speaker)
+    @playing = true
+    @speaker.once 'close', () ->
+      loadNextSong()
 
   # Remove a song with the given id metadata attribute
   remove: (id) ->
@@ -76,13 +94,13 @@ class StreamPlayer extends events.EventEmitter
 
   # Decode the stream and pipe it to our speakers
   playStream: (stream) ->
-    decoder = new lame.Decoder()
-    speaker = new Speaker(audioOptions)
-    stream.pipe(decoder).once 'format', () ->
-      decoder.pipe(speaker)
+    self.decoder = new lame.Decoder()
+    self.speaker = new Speaker(audioOptions)
+    stream.pipe(self.decoder).once 'format', () ->
+      self.decoder.pipe(self.speaker)
       self.startTime = Date.now();
       self.emit('play start')
-      speaker.once 'close', () ->
+      self.speaker.once 'close', () ->
         loadNextSong()
 
 
