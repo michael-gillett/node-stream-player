@@ -62,6 +62,8 @@ Adds the mp3 stream located at `url` to the queue. The optional metadata paramet
 Starts playing the next song in the queue out of the speakers.
 `throws new Error('A song is already playing.')`
 `throws new Error('The queue is empty.')`
+### `pause()`
+Pause the current playing sound. Call `play()` to resume.
 ### `getQueue()`
 Returns an array of song metadata in the queue.
 ### `isPlaying()`
@@ -83,5 +85,4 @@ Returns an object containing the current playing song's metadata and the Unix ti
 
 
 ### Roadmap
-- Ability to pause a song part way through and pick up at a later time
 - Ability to play local files (Not a huge priority for my needs, but I will add it at some point for completeness)
