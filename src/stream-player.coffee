@@ -2,6 +2,7 @@ Speaker = require('speaker')
 lame = require('lame')
 request = require('request')
 events = require('events')
+fs = require('fs')
 
 audioOptions = {
   channels: 2,
@@ -84,12 +85,16 @@ class StreamPlayer extends events.EventEmitter
 
   # Get the audio stream
   getStream: (url, callback) ->
-    request.get(url).on 'response', (res) ->
-      if res.headers['content-type'] == 'audio/mpeg'
-        callback(res)
-      else
-        self.emit('invalid url')
-        loadNextSong()
+    if 'http' not in url
+      stream = fs.createReadStream(url)
+      callback(stream)
+    else
+      request.get(url).on 'response', (res) ->
+        if res.headers['content-type'] == 'audio/mpeg'
+          callback(res)
+        else
+          self.emit('invalid url')
+          loadNextSong()
 
 
   # Decode the stream and pipe it to our speakers

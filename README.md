@@ -85,4 +85,4 @@ Returns an object containing the current playing song's metadata and the Unix ti
 
 
 ### Roadmap
-- Ability to play local files (Not a huge priority for my needs, but I will add it at some point for completeness)
+- Support for more audio file types
